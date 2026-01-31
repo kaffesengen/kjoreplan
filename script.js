@@ -12,18 +12,19 @@ const viewBtn = document.getElementById('view-btn');
 
 let scheduleData = [];
 let wakeLock = null;
-
-// VIEW MODES
 const modes = ['auto', 'phone', 'tablet', 'desktop'];
 let currentModeIndex = 0;
 
-// --- AUTH ---
+// --- LOGIN ---
 function attemptLogin() {
     const u = document.getElementById('username').value;
     const p = document.getElementById('password').value;
-    if (u === USER && p === PASS) {
+
+    // HER ER ENDRINGEN:
+    // Vi legger til .toLowerCase() på 'u' (input) og 'USER' (fasit)
+    if (u.toLowerCase() === USER.toLowerCase() && p === PASS) {
+        
         loginOverlay.style.display = 'none';
-        appContainer.style.display = 'flex';
         initApp();
         requestWakeLock();
     } else {
@@ -33,23 +34,16 @@ function attemptLogin() {
 }
 document.getElementById('password').addEventListener('keyup', (e) => { if(e.key==='Enter') attemptLogin() });
 
-// --- VIEW SWITCHING ---
+// --- VIEW MODES ---
 function cycleViewMode() {
-    // Remove current class
     document.body.classList.remove('mode-' + modes[currentModeIndex]);
-    
-    // Next mode
     currentModeIndex = (currentModeIndex + 1) % modes.length;
     const newMode = modes[currentModeIndex];
-    
-    // Add new class
     document.body.classList.add('mode-' + newMode);
-    
-    // Update button text
     viewBtn.innerText = "VIEW: " + newMode.toUpperCase();
 }
 
-// --- APP ---
+// --- APP INIT ---
 async function initApp() {
     try {
         const response = await fetch('data.json');
@@ -59,13 +53,15 @@ async function initApp() {
         updateClock();
     } catch (e) {
         console.error(e);
-        container.innerHTML = "<div style='color:red; padding:20px'>Error loading data.json</div>";
+        container.innerHTML = "<div style='color:red; padding:20px; text-align:center;'>Error loading data.json</div>";
     }
 }
 
+// --- RENDER ---
 function renderSchedule() {
     container.innerHTML = '';
     const savedDoneState = JSON.parse(localStorage.getItem('weddingDoneState')) || {};
+    const savedEdits = JSON.parse(localStorage.getItem('weddingEdits')) || {};
 
     scheduleData.forEach((item, index) => {
         if (item.type === 'header') {
@@ -74,77 +70,80 @@ function renderSchedule() {
             div.innerHTML = `<span>${item.start.substr(0,5)}</span> ${item.title}`;
             container.appendChild(div);
         } else {
-            const isDone = savedDoneState[item.id] ? 'done' : '';
+            // Merge defaults with saved edits
+            const avText = savedEdits[item.id + '_av'] !== undefined ? savedEdits[item.id + '_av'] : (item.av || '');
+            const noteText = savedEdits[item.id + '_note'] !== undefined ? savedEdits[item.id + '_note'] : (item.note || '');
             
-            // Calculate Times
+            const isDone = savedDoneState[item.id] ? 'done' : '';
             const start = parseTime(item.start);
             const durSec = parseDuration(item.dur);
             const end = new Date(start.getTime() + durSec * 1000);
 
-            // Create Wrapper
             const wrapper = document.createElement('div');
             wrapper.className = `row-wrapper ${isDone}`;
             wrapper.id = 'wrapper-' + item.id;
             wrapper.dataset.startObj = start.toISOString();
             wrapper.dataset.endObj = end.toISOString();
 
-            // Create Main Row
-            const rowMain = document.createElement('div');
-            rowMain.className = 'row-main';
-            rowMain.innerHTML = `
-                <div class="col" onclick="toggleDone(${item.id})">
-                    <div class="btn-check" id="btn-${item.id}">${isDone ? 'OFF' : 'ON'}</div>
-                </div>
-                <div class="col time">${item.start.substr(0,5)}</div>
-                
-                <div class="col col-who">${item.who || '-'}</div>
+            // Main Row Content
+            wrapper.innerHTML = `
+                <div class="row-main">
+                    <div class="col" onclick="toggleDone(${item.id})">
+                        <div class="btn-check" id="btn-${item.id}">${isDone ? 'OFF' : 'ON'}</div>
+                    </div>
+                    <div class="col time">${item.start.substr(0,5)}</div>
+                    
+                    <div class="col col-who col-desktop">${item.who || '-'}</div>
 
-                <div class="col desc-container">
-                    <div class="desc">${item.desc}</div>
-                    <div class="meta">${item.type || ''}</div>
-                </div>
-                
-                <div class="col col-av">${item.av || ''}</div>
-                <div class="col col-note">${item.note || ''}</div>
-                <div class="col dur" style="justify-content:flex-end; font-family:'Courier New'; color:#888;">${item.dur.substr(3,2)}m</div>
+                    <div class="col desc-container">
+                        <div class="desc">${item.desc}</div>
+                        <div class="meta">${item.type || ''} ${item.who ? ' • ' + item.who : ''}</div>
+                    </div>
+                    
+                    <div class="col col-av col-desktop" contenteditable="true" onblur="saveEdit(${item.id}, 'av', this)">${avText}</div>
+                    <div class="col col-note col-desktop" contenteditable="true" onblur="saveEdit(${item.id}, 'note', this)">${noteText}</div>
+                    
+                    <div class="col dur" style="justify-content:flex-end; font-family:'Courier New'; color:#888;">${item.dur.substr(3,2)}m</div>
 
-                <div class="col col-expand">
-                    <button class="btn-expand" id="exp-${item.id}" onclick="toggleDetails(${item.id})">▼</button>
+                    <div class="col col-expand">
+                        <button class="btn-expand" id="exp-${item.id}" onclick="toggleDetails(${item.id})">▼</button>
+                    </div>
+                    
+                    <div class="progress-bar" id="bar-${item.id}"></div>
                 </div>
-                
-                <div class="progress-bar" id="bar-${item.id}"></div>
-            `;
 
-            // Create Details Box (Hidden by default)
-            const details = document.createElement('div');
-            details.className = 'details-box';
-            details.id = 'details-' + item.id;
-            
-            // Only show details if there is data
-            const hasAv = item.av && item.av.length > 0;
-            const hasNote = item.note && item.note.length > 0;
-            const hasWho = item.who && item.who.length > 0;
-
-            details.innerHTML = `
-                <div class="detail-item">
-                    <span class="detail-label">ANSVARLIG</span>
-                    <span class="detail-content" style="color:var(--accent-blue)">${item.who || '-'}</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">LYD / BILDE</span>
-                    <span class="detail-content" style="color:#8fd">${item.av || 'Ingen spesifikasjoner'}</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">KOMMENTARER</span>
-                    <span class="detail-content" style="color:#fd8; font-style:italic">${item.note || '-'}</span>
+                <div class="details-box" id="details-${item.id}">
+                    <div class="detail-item">
+                        <span class="detail-label">ANSVARLIG</span>
+                        <span class="detail-content" style="color:var(--accent-blue)">${item.who || '-'}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">LYD / BILDE (Trykk for å redigere)</span>
+                        <div class="detail-content" style="color:#8fd" contenteditable="true" onblur="saveEdit(${item.id}, 'av', this)">${avText || 'Ingen info'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">KOMMENTARER (Trykk for å redigere)</span>
+                        <div class="detail-content" style="color:#fd8; font-style:italic" contenteditable="true" onblur="saveEdit(${item.id}, 'note', this)">${noteText || 'Ingen info'}</div>
+                    </div>
                 </div>
             `;
-
-            wrapper.appendChild(rowMain);
-            wrapper.appendChild(details);
             container.appendChild(wrapper);
         }
     });
+}
+
+// --- LOGIC ---
+function saveEdit(id, field, element) {
+    const newVal = element.innerText;
+    const savedEdits = JSON.parse(localStorage.getItem('weddingEdits')) || {};
+    
+    // Save the edit
+    savedEdits[id + '_' + field] = newVal;
+    localStorage.setItem('weddingEdits', JSON.stringify(savedEdits));
+
+    // Sync Desktop/Phone fields so they match instantly if view changes
+    // (Simple reload logic or targeted DOM update could work, reloading is safer for consistency)
+    // console.log("Saved", field, newVal);
 }
 
 function toggleDetails(id) {
@@ -177,7 +176,6 @@ function updateClock() {
     const wrappers = document.querySelectorAll('.row-wrapper');
     wrappers.forEach(wrap => {
         if (wrap.classList.contains('done')) return;
-
         const start = new Date(wrap.dataset.startObj);
         const end = new Date(wrap.dataset.endObj);
         const bar = wrap.querySelector('.progress-bar');
@@ -204,7 +202,6 @@ function parseDuration(d) {
     const parts = d.replace(/\./g,':').split(':');
     return (parseInt(parts[0])*3600) + (parseInt(parts[1])*60) + parseInt(parts[2]);
 }
-
 function toggleFullScreen() {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen();
@@ -215,7 +212,6 @@ function toggleFullScreen() {
         document.getElementById('fs-btn').innerText = "FULL";
     }
 }
-
 async function requestWakeLock() {
     try { wakeLock = await navigator.wakeLock.request('screen'); }
     catch (e) { console.log("WakeLock error", e); }
