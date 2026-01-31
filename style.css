@@ -239,3 +239,21 @@ body.mode-desktop .col-desktop { display: flex; }
     body.mode-auto .row-main { grid-template-columns: 50px 70px 60px 1.5fr 1fr 1fr 60px; }
     body.mode-auto .col-av, body.mode-auto .col-note, body.mode-auto .col-who { display: flex; }
 }
+
+/* --- LIST HEADER STYLE --- */
+#list-header {
+    background: #0d0d0d;
+    border-bottom: 1px solid #333;
+    padding: 5px 0;
+    font-weight: bold;
+    letter-spacing: 1px;
+    z-index: 90;
+    flex-shrink: 0; /* Hindrer at den krymper */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+/* Sørg for at overskriftene følger samme synlighetsregler som innholdet */
+#list-header .col {
+    text-transform: uppercase;
+    color: #666; /* Standard farge for header-tekst */
+}
