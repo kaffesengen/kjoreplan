@@ -2,21 +2,25 @@
 const USER = "admin";
 const PASS = "Brunstad2020";
 
-// DOM ELEMENTS
+// DOM
 const loginOverlay = document.getElementById('login-overlay');
 const appContainer = document.getElementById('app-container');
 const container = document.getElementById('schedule-container');
 const clockEl = document.getElementById('clock');
 const errorMsg = document.getElementById('error-msg');
+const viewBtn = document.getElementById('view-btn');
 
 let scheduleData = [];
 let wakeLock = null;
 
-// --- AUTHENTICATION ---
+// VIEW MODES
+const modes = ['auto', 'phone', 'tablet', 'desktop'];
+let currentModeIndex = 0;
+
+// --- AUTH ---
 function attemptLogin() {
     const u = document.getElementById('username').value;
     const p = document.getElementById('password').value;
-
     if (u === USER && p === PASS) {
         loginOverlay.style.display = 'none';
         appContainer.style.display = 'flex';
@@ -27,13 +31,25 @@ function attemptLogin() {
         setTimeout(() => errorMsg.innerText = "", 2000);
     }
 }
+document.getElementById('password').addEventListener('keyup', (e) => { if(e.key==='Enter') attemptLogin() });
 
-// Allow "Enter" key to login
-document.getElementById('password').addEventListener('keyup', function(event) {
-    if (event.key === 'Enter') attemptLogin();
-});
+// --- VIEW SWITCHING ---
+function cycleViewMode() {
+    // Remove current class
+    document.body.classList.remove('mode-' + modes[currentModeIndex]);
+    
+    // Next mode
+    currentModeIndex = (currentModeIndex + 1) % modes.length;
+    const newMode = modes[currentModeIndex];
+    
+    // Add new class
+    document.body.classList.add('mode-' + newMode);
+    
+    // Update button text
+    viewBtn.innerText = "VIEW: " + newMode.toUpperCase();
+}
 
-// --- APP LOGIC ---
+// --- APP ---
 async function initApp() {
     try {
         const response = await fetch('data.json');
@@ -42,15 +58,13 @@ async function initApp() {
         setInterval(updateClock, 1000);
         updateClock();
     } catch (e) {
-        console.error("Could not load data.json", e);
-        container.innerHTML = "<div style='padding:20px; color:red'>ERROR: Could not load data.json</div>";
+        console.error(e);
+        container.innerHTML = "<div style='color:red; padding:20px'>Error loading data.json</div>";
     }
 }
 
 function renderSchedule() {
     container.innerHTML = '';
-    
-    // Retrieve saved state from localStorage
     const savedDoneState = JSON.parse(localStorage.getItem('weddingDoneState')) || {};
 
     scheduleData.forEach((item, index) => {
@@ -62,123 +76,150 @@ function renderSchedule() {
         } else {
             const isDone = savedDoneState[item.id] ? 'done' : '';
             
-            const row = document.createElement('div');
-            row.className = `row ${isDone}`;
-            row.id = 'row-' + item.id;
-            row.dataset.start = item.start;
-            row.dataset.dur = item.dur;
-            row.dataset.id = item.id;
+            // Calculate Times
+            const start = parseTime(item.start);
+            const durSec = parseDuration(item.dur);
+            const end = new Date(start.getTime() + durSec * 1000);
 
-            // Calculate timing objects
-            const startTime = parseTime(item.start);
-            const durSeconds = parseDuration(item.dur);
-            const endTime = new Date(startTime.getTime() + durSeconds * 1000);
-            row.dataset.endTimeObj = endTime.toISOString();
-            row.dataset.startTimeObj = startTime.toISOString();
+            // Create Wrapper
+            const wrapper = document.createElement('div');
+            wrapper.className = `row-wrapper ${isDone}`;
+            wrapper.id = 'wrapper-' + item.id;
+            wrapper.dataset.startObj = start.toISOString();
+            wrapper.dataset.endObj = end.toISOString();
 
-            row.innerHTML = `
+            // Create Main Row
+            const rowMain = document.createElement('div');
+            rowMain.className = 'row-main';
+            rowMain.innerHTML = `
                 <div class="col" onclick="toggleDone(${item.id})">
                     <div class="btn-check" id="btn-${item.id}">${isDone ? 'OFF' : 'ON'}</div>
                 </div>
                 <div class="col time">${item.start.substr(0,5)}</div>
+                
+                <div class="col col-who">${item.who || '-'}</div>
+
                 <div class="col desc-container">
                     <div class="desc">${item.desc}</div>
-                    <div class="meta">
-                        ${item.who ? `<span>${item.who}</span>` : ''} 
-                        ${item.type ? `<span style="color:#aaa;">${item.type}</span>` : ''}
-                    </div>
+                    <div class="meta">${item.type || ''}</div>
                 </div>
-                <div class="col dur">${item.dur.substr(3,2)}m</div>
+                
+                <div class="col col-av">${item.av || ''}</div>
+                <div class="col col-note">${item.note || ''}</div>
+                <div class="col dur" style="justify-content:flex-end; font-family:'Courier New'; color:#888;">${item.dur.substr(3,2)}m</div>
+
+                <div class="col col-expand">
+                    <button class="btn-expand" id="exp-${item.id}" onclick="toggleDetails(${item.id})">▼</button>
+                </div>
+                
                 <div class="progress-bar" id="bar-${item.id}"></div>
             `;
-            container.appendChild(row);
+
+            // Create Details Box (Hidden by default)
+            const details = document.createElement('div');
+            details.className = 'details-box';
+            details.id = 'details-' + item.id;
+            
+            // Only show details if there is data
+            const hasAv = item.av && item.av.length > 0;
+            const hasNote = item.note && item.note.length > 0;
+            const hasWho = item.who && item.who.length > 0;
+
+            details.innerHTML = `
+                <div class="detail-item">
+                    <span class="detail-label">ANSVARLIG</span>
+                    <span class="detail-content" style="color:var(--accent-blue)">${item.who || '-'}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">LYD / BILDE</span>
+                    <span class="detail-content" style="color:#8fd">${item.av || 'Ingen spesifikasjoner'}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">KOMMENTARER</span>
+                    <span class="detail-content" style="color:#fd8; font-style:italic">${item.note || '-'}</span>
+                </div>
+            `;
+
+            wrapper.appendChild(rowMain);
+            wrapper.appendChild(details);
+            container.appendChild(wrapper);
         }
     });
 }
 
+function toggleDetails(id) {
+    const box = document.getElementById('details-' + id);
+    const btn = document.getElementById('exp-' + id);
+    box.classList.toggle('open');
+    btn.classList.toggle('rotated');
+}
+
 function toggleDone(id) {
-    const row = document.getElementById('row-' + id);
+    const wrapper = document.getElementById('wrapper-' + id);
     const btn = document.getElementById('btn-' + id);
+    wrapper.classList.toggle('done');
     
-    row.classList.toggle('done');
-    
-    // Update LocalStorage
-    const savedDoneState = JSON.parse(localStorage.getItem('weddingDoneState')) || {};
-    
-    if (row.classList.contains('done')) {
-        savedDoneState[id] = true;
+    const savedState = JSON.parse(localStorage.getItem('weddingDoneState')) || {};
+    if (wrapper.classList.contains('done')) {
+        savedState[id] = true;
         btn.innerText = "OFF";
     } else {
-        delete savedDoneState[id];
+        delete savedState[id];
         btn.innerText = "ON";
     }
-    
-    localStorage.setItem('weddingDoneState', JSON.stringify(savedDoneState));
-}
-
-function parseTime(timeStr) {
-    const d = new Date();
-    const parts = timeStr.replace(/\./g, ':').split(':');
-    d.setHours(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2] || 0));
-    return d;
-}
-
-function parseDuration(durStr) {
-    const parts = durStr.replace(/\./g, ':').split(':');
-    return (parseInt(parts[0]) * 3600) + (parseInt(parts[1]) * 60) + parseInt(parts[2]);
+    localStorage.setItem('weddingDoneState', JSON.stringify(savedState));
 }
 
 function updateClock() {
     const now = new Date();
-    const timeString = now.toLocaleTimeString('no-NO', { hour12: false });
-    clockEl.innerText = timeString;
+    clockEl.innerText = now.toLocaleTimeString('no-NO', { hour12: false });
 
-    const rows = document.querySelectorAll('.row');
-    rows.forEach(row => {
-        if (row.classList.contains('done')) return;
+    const wrappers = document.querySelectorAll('.row-wrapper');
+    wrappers.forEach(wrap => {
+        if (wrap.classList.contains('done')) return;
 
-        const start = new Date(row.dataset.startTimeObj);
-        const end = new Date(row.dataset.endTimeObj);
-        const bar = row.querySelector('.progress-bar');
+        const start = new Date(wrap.dataset.startObj);
+        const end = new Date(wrap.dataset.endObj);
+        const bar = wrap.querySelector('.progress-bar');
 
         if (now >= start && now < end) {
-            row.classList.add('active');
-            const totalDur = (end - start);
-            const elapsed = (now - start);
-            const pct = (elapsed / totalDur) * 100;
+            wrap.classList.add('active');
+            const pct = ((now - start) / (end - start)) * 100;
             bar.style.width = pct + "%";
         } else {
-            row.classList.remove('active');
+            wrap.classList.remove('active');
             bar.style.width = "0%";
         }
     });
 }
 
 // --- UTILS ---
+function parseTime(t) {
+    const d = new Date();
+    const parts = t.replace(/\./g,':').split(':');
+    d.setHours(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]||0));
+    return d;
+}
+function parseDuration(d) {
+    const parts = d.replace(/\./g,':').split(':');
+    return (parseInt(parts[0])*3600) + (parseInt(parts[1])*60) + parseInt(parts[2]);
+}
+
 function toggleFullScreen() {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen();
         document.getElementById('fs-btn').innerText = "EXIT";
         requestWakeLock();
     } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-            document.getElementById('fs-btn').innerText = "FULLSCREEN";
-        }
+        if (document.exitFullscreen) document.exitFullscreen();
+        document.getElementById('fs-btn').innerText = "FULL";
     }
 }
 
 async function requestWakeLock() {
-    try {
-        wakeLock = await navigator.wakeLock.request('screen');
-        console.log('Wake Lock active');
-    } catch (err) {
-        console.log("Wake Lock error:", err);
-    }
+    try { wakeLock = await navigator.wakeLock.request('screen'); }
+    catch (e) { console.log("WakeLock error", e); }
 }
-
 document.addEventListener('visibilitychange', async () => {
-    if (wakeLock !== null && document.visibilityState === 'visible') {
-        requestWakeLock();
-    }
+    if (wakeLock !== null && document.visibilityState === 'visible') requestWakeLock();
 });
