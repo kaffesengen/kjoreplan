@@ -1,8 +1,9 @@
 :root {
     --bg-color: #000000;
     --panel-bg: #1a1a1a;
+    --panel-expanded: #252525;
     --text-main: #e0e0e0;
-    --text-dim: #666666;
+    --text-dim: #888;
     --accent-blue: #00aaff;
     --accent-green: #00ff00;
     --accent-red: #ff3333;
@@ -24,126 +25,180 @@ body {
     flex-direction: column;
 }
 
-/* --- LOGIN STYLE --- */
+/* --- LOGIN --- */
 #login-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: #000;
+    background: #000; z-index: 9999;
     display: flex; align-items: center; justify-content: center;
-    z-index: 9999;
 }
 .login-box {
-    background: #111;
-    border: 2px solid var(--accent-blue);
-    padding: 40px;
-    text-align: center;
-    box-shadow: 0 0 20px rgba(0, 170, 255, 0.3);
-    width: 90%; max-width: 400px;
+    background: #111; border: 2px solid var(--accent-blue); padding: 30px;
+    text-align: center; width: 90%; max-width: 350px;
 }
-.login-box h1 { margin: 0; color: var(--accent-blue); letter-spacing: 2px; }
-.login-box p { color: #666; font-size: 12px; margin-bottom: 20px; text-transform: uppercase; }
-.login-box input {
-    width: 100%; padding: 15px; margin-bottom: 10px;
-    background: #222; border: 1px solid #444; color: #fff;
-    font-size: 16px; text-align: center;
-}
-.login-box button {
-    width: 100%; padding: 15px;
-    background: var(--accent-blue); color: #000; border: none;
-    font-weight: bold; font-size: 16px; cursor: pointer;
-}
-#error-msg { color: var(--accent-red); margin-top: 10px; height: 20px; }
+.login-box h1 { color: var(--accent-blue); margin: 0 0 10px 0; font-size: 24px;}
+.login-box input { width: 100%; padding: 10px; margin-bottom: 10px; background: #222; border: 1px solid #444; color: #fff; text-align: center; font-size: 16px; }
+.login-box button { width: 100%; padding: 12px; background: var(--accent-blue); border: none; font-weight: bold; }
+#error-msg { color: var(--accent-red); height: 20px; font-size: 12px; margin-top: 5px;}
 
 /* --- HEADER --- */
 #header {
-    background: linear-gradient(to bottom, #2a2a2a, #111);
+    background: #151515;
     border-bottom: 2px solid var(--accent-blue);
-    padding: 10px 15px;
+    padding: 0 10px;
     display: flex; justify-content: space-between; align-items: center;
-    height: 60px; flex-shrink: 0; z-index: 100;
-}
-#clock {
-    font-size: 28px; font-weight: bold; color: #fff;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    font-variant-numeric: tabular-nums;
-}
-#controls button {
-    background: #333; border: 1px solid #555; color: #bbb;
-    padding: 8px 15px; font-weight: bold; border-radius: 4px;
+    height: 55px; flex-shrink: 0; z-index: 100;
 }
 
-/* --- LIST & ITEMS --- */
+#clock {
+    font-size: 24px; font-weight: bold; color: #fff;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 1px;
+}
+
+#controls { display: flex; gap: 8px; }
+#controls button {
+    background: #333; border: 1px solid #555; color: #ccc;
+    padding: 6px 10px; font-weight: bold; border-radius: 4px;
+    font-size: 12px; cursor: pointer; min-width: 80px;
+}
+#controls button:active { background: #555; color: #fff; }
+
+/* --- SCHEDULE CONTAINER --- */
 #schedule-container {
     flex-grow: 1; overflow-y: auto; padding-bottom: 50px;
-    background: #050505;
+    background: #000;
 }
 
+/* --- ROW STYLES --- */
 .section-header {
     background: #111; color: var(--accent-blue);
-    padding: 15px 10px; font-size: 20px; font-weight: 900;
+    padding: 10px; font-size: 18px; font-weight: 900;
     text-transform: uppercase; border-bottom: 1px solid var(--accent-blue);
     position: sticky; top: 0; z-index: 10;
 }
 .section-header.fest { color: var(--accent-pink); border-bottom-color: var(--accent-pink); }
 
-.row {
-    display: grid;
-    /* Mobile Layout default */
-    grid-template-columns: 50px 60px 1fr 60px;
+/* Base Row Structure */
+.row-wrapper {
     border-bottom: 1px solid var(--border-color);
     background: var(--panel-bg);
+}
+.row-wrapper.done { opacity: 0.35; filter: grayscale(100%); }
+.row-wrapper.active {
+    background: #162016; /* Dark Green tint */
+    border-left: 4px solid var(--accent-green);
+}
+
+/* Main content of the row */
+.row-main {
+    display: grid;
+    align-items: center;
+    padding: 2px 0;
     position: relative;
-    transition: all 0.2s ease;
+    min-height: 50px;
 }
 
-.row.done { opacity: 0.3; filter: grayscale(100%); }
-.row.active {
-    background: #1e251e;
-    border-left: 5px solid var(--accent-green);
-    box-shadow: inset 0 0 15px rgba(0, 255, 0, 0.1);
-}
-
-/* Element Styles */
-.col { padding: 12px 8px; display: flex; align-items: center; }
+/* Columns */
+.col { padding: 5px 8px; display: flex; align-items: center; }
 .time { font-family: 'Courier New', monospace; font-weight: bold; color: var(--accent-blue); font-size: 16px; }
-.desc-container { display: flex; flex-direction: column; justify-content: center; }
-.desc { font-size: 16px; line-height: 1.2; margin-bottom: 4px; }
-.meta { font-size: 12px; color: var(--text-dim); text-transform: uppercase; display: flex; gap: 10px; }
-.meta span { background: #2a2a2a; padding: 2px 5px; border-radius: 2px; }
-.dur { font-family: 'Courier New', monospace; color: #888; font-size: 13px; justify-content: flex-end; }
+.desc { font-size: 15px; font-weight: 500; line-height: 1.2; }
+.meta { font-size: 11px; color: var(--text-dim); margin-top: 2px; text-transform: uppercase; }
 
-/* Progress Bar */
-.progress-bar {
-    position: absolute; bottom: 0; left: 0; height: 3px;
-    background: var(--accent-green); width: 0%; transition: width 1s linear;
-}
+/* Extra Columns (Desktop/Tablet) */
+.col-av, .col-note, .col-who { font-size: 13px; color: #aaa; overflow: hidden; text-overflow: ellipsis; }
+.col-av { color: #8fd; } /* Cyan tint for AV */
+.col-note { color: #fd8; font-style: italic; } /* Yellow tint for Notes */
 
 /* Check Button */
 .btn-check {
     background: #222; border: 1px solid #444; color: #555;
-    width: 35px; height: 35px; border-radius: 3px;
+    width: 32px; height: 32px; border-radius: 4px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 10px; margin: auto;
+    font-size: 10px; cursor: pointer;
 }
-.row.done .btn-check { background: #111; color: var(--accent-red); border-color: #333; }
+.row-wrapper.done .btn-check { color: var(--accent-red); border-color: #400; background: #1a0000; }
 
-/* --- RESPONSIVE / MEDIA QUERIES --- */
+/* Progress Bar */
+.progress-bar {
+    position: absolute; bottom: 0; left: 0; height: 2px;
+    background: var(--accent-green); width: 0%; transition: width 1s linear;
+    z-index: 5;
+}
 
-/* Tablet / iPad (bredere rader, større tekst) */
+/* --- EXPANDABLE DETAILS (PHONE ONLY) --- */
+.details-box {
+    max-height: 0;
+    overflow: hidden;
+    background: var(--panel-expanded);
+    transition: max-height 0.3s ease-out, padding 0.3s ease;
+    padding: 0 10px;
+}
+.details-box.open {
+    padding: 10px;
+    border-top: 1px solid #333;
+    /* max-height set via JS or large enough value */
+    max-height: 300px; 
+}
+.detail-item { margin-bottom: 8px; font-size: 14px; }
+.detail-label { color: #666; font-size: 10px; text-transform: uppercase; display: block; margin-bottom: 2px;}
+.detail-content { color: #ddd; }
+.btn-expand {
+    background: transparent; border: none; color: #555;
+    font-size: 12px; cursor: pointer; padding: 10px;
+    transition: transform 0.3s;
+}
+.btn-expand.rotated { transform: rotate(180deg); color: var(--accent-blue); }
+
+
+/* =========================================
+   VIEW MODES
+   ========================================= */
+
+/* 1. PHONE MODE (Default or forced) */
+body.mode-phone .row-main, 
+body.mode-auto .row-main { 
+    /* [Check] [Time] [Desc] [ExpandBtn] */
+    grid-template-columns: 45px 55px 1fr 40px; 
+}
+body.mode-phone .col-who, body.mode-phone .col-av, body.mode-phone .col-note,
+body.mode-auto .col-who, body.mode-auto .col-av, body.mode-auto .col-note {
+    display: none; /* Hide desktop columns */
+}
+/* Show Expand button */
+body.mode-phone .col-expand, body.mode-auto .col-expand { display: flex; justify-content: center; }
+
+
+/* 2. TABLET MODE */
+body.mode-tablet .row-main {
+    /* [Check] [Time] [Who] [Desc] [Dur] */
+    grid-template-columns: 50px 70px 60px 1fr 60px;
+}
+body.mode-tablet .col-expand, body.mode-tablet .details-box { display: none !important; } 
+body.mode-tablet .col-av, body.mode-tablet .col-note { display: none; } /* Still hide detailed AV/Note to save space */
+body.mode-tablet .desc { font-size: 18px; }
+body.mode-tablet .col-who { display: flex; font-weight: bold; color: var(--accent-blue); }
+
+
+/* 3. DESKTOP MODE */
+body.mode-desktop .row-main {
+    /* [Check] [Time] [Who] [Desc] [AV] [Note] [Dur] */
+    grid-template-columns: 50px 70px 50px 1.5fr 1fr 1fr 60px;
+    padding: 5px 0;
+}
+body.mode-desktop #schedule-container { width: 100%; max-width: 1400px; margin: 0 auto; border-inline: 1px solid #333;}
+body.mode-desktop .col-expand, body.mode-desktop .details-box { display: none !important; }
+body.mode-desktop .col-av, body.mode-desktop .col-note, body.mode-desktop .col-who { display: flex; }
+body.mode-desktop .desc { font-size: 16px; }
+
+
+/* AUTO MODE: Media Queries overrides */
 @media (min-width: 768px) {
-    .row { grid-template-columns: 60px 80px 1fr 100px; padding: 5px 20px; }
-    .desc { font-size: 20px; }
-    .meta { font-size: 14px; }
-    .time { font-size: 18px; }
-    .btn-check { width: 40px; height: 40px; font-size: 12px; }
+    body.mode-auto .row-main { grid-template-columns: 50px 70px 60px 1fr 60px; } /* Tablet look */
+    body.mode-auto .col-expand, body.mode-auto .details-box { display: none !important; }
+    body.mode-auto .col-av, body.mode-auto .col-note { display: none; }
+    body.mode-auto .col-who { display: flex; }
 }
-
-/* PC / Desktop (Channel Strip look or very wide) */
 @media (min-width: 1200px) {
-    #schedule-container {
-        width: 100%; max-width: 1200px; margin: 0 auto;
-        border-left: 1px solid #333; border-right: 1px solid #333;
-    }
-    .row.active { transform: scale(1.01); z-index: 5; border: 1px solid var(--accent-green); }
-    ::-webkit-scrollbar { width: 10px; background: #111; }
-    ::-webkit-scrollbar-thumb { background: #444; border-radius: 5px; }
+    body.mode-auto .row-main { grid-template-columns: 50px 70px 50px 1.5fr 1fr 1fr 60px; } /* Desktop look */
+    body.mode-auto .col-av, body.mode-auto .col-note { display: flex; }
 }
