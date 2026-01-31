@@ -1,29 +1,35 @@
 [
   { "type": "header", "title": "VIELSE", "start": "16:30:00" },
-  { "id": 1, "desc": "Inngang: Promise of the World", "who": "DO/LDN", "type": "Playback", "start": "16:30:00", "dur": "00:03:00" },
-  { "id": 2, "desc": "Velkomst v/Daniel", "who": "DO", "type": "Tale", "start": "16:33:00", "dur": "00:02:00" },
-  { "id": 3, "desc": "Bønn v/Enok", "who": "DO", "type": "Tale", "start": "16:35:00", "dur": "00:01:00" },
-  { "id": 4, "desc": "Allsang: HV 212 Jesus Kristus selv forener", "who": "DO/LDN", "type": "Band", "start": "16:36:00", "dur": "00:03:00" },
-  { "id": 5, "desc": "Vielse v/Daniel", "who": "", "type": "Seremoni", "start": "16:39:00", "dur": "00:15:00" },
-  { "id": 6, "desc": "Sang: Det skjer et under...", "who": "Solist", "type": "Sang", "start": "16:54:00", "dur": "00:04:00" },
-  { "id": 7, "desc": "Tale/Ord", "who": "Prest", "type": "Tale", "start": "16:58:00", "dur": "00:10:00" },
-  { "id": 8, "desc": "Ekteskapsinngåelse", "who": "Prest", "type": "Seremoni", "start": "17:08:00", "dur": "00:05:00" },
-  { "id": 9, "desc": "Forbønn", "who": "Alle", "type": "Bønn", "start": "17:13:00", "dur": "00:05:00" },
-  { "id": 10, "desc": "Utgang", "who": "Band", "type": "Musikk", "start": "17:18:00", "dur": "00:05:00" },
+  { 
+    "id": 1, "desc": "Inngang: Promise of the World", "who": "DO/LDN", "type": "Playback", "start": "16:30:00", "dur": "00:03:00",
+    "av": "Bakgrunnsbilde på midt og sideskjermer", "note": "Alle reiser seg. Forlovere/brudgom først." 
+  },
+  { "id": 2, "desc": "Velkomst v/Daniel", "who": "DO", "type": "Tale", "start": "16:33:00", "dur": "00:02:00", "av": "", "note": "" },
+  { "id": 3, "desc": "Bønn v/Enok", "who": "DO", "type": "Tale", "start": "16:35:00", "dur": "00:01:00", "av": "", "note": "" },
+  { 
+    "id": 4, "desc": "Allsang: HV 212 Jesus Kristus", "who": "DO/LDN", "type": "Band", "start": "16:36:00", "dur": "00:03:00",
+    "av": "Sangtekst på skjerm", "note": "Seasound synger med fra salen"
+  },
+  { "id": 5, "desc": "Vielse v/Daniel", "who": "", "type": "Seremoni", "start": "16:39:00", "dur": "00:15:00", "av": "", "note": "" },
+  { "id": 6, "desc": "Sang: Det skjer et under...", "who": "Solist", "type": "Sang", "start": "16:54:00", "dur": "00:04:00", "av": "", "note": "" },
+  { "id": 7, "desc": "Tale/Ord", "who": "Prest", "type": "Tale", "start": "16:58:00", "dur": "00:10:00", "av": "", "note": "" },
+  { "id": 8, "desc": "Ekteskapsinngåelse", "who": "Prest", "type": "Seremoni", "start": "17:08:00", "dur": "00:05:00", "av": "", "note": "" },
+  { "id": 9, "desc": "Forbønn", "who": "Alle", "type": "Bønn", "start": "17:13:00", "dur": "00:05:00", "av": "", "note": "" },
+  { "id": 10, "desc": "Utgang", "who": "Band", "type": "Musikk", "start": "17:18:00", "dur": "00:05:00", "av": "", "note": "" },
   
   { "type": "header", "title": "FEST / MIDDAG", "start": "17:30:00", "class": "fest" },
   
-  { "id": 11, "desc": "Gjestene finner plassene", "who": "Toastmaster", "type": "Info", "start": "17:30:00", "dur": "00:10:00" },
-  { "id": 12, "desc": "Velkomst Fest", "who": "Toastmaster", "type": "Tale", "start": "17:40:00", "dur": "00:05:00" },
-  { "id": 13, "desc": "Forrett serveres", "who": "Kjøkken", "type": "Mat", "start": "17:45:00", "dur": "00:20:00" },
-  { "id": 14, "desc": "Tale: Brudens Far", "who": "Far", "type": "Tale", "start": "18:05:00", "dur": "00:05:00" },
+  { "id": 11, "desc": "Gjestene finner plassene", "who": "Toastmaster", "type": "Info", "start": "17:30:00", "dur": "00:10:00", "av": "", "note": "" },
+  { "id": 12, "desc": "Velkomst Fest", "who": "Toastmaster", "type": "Tale", "start": "17:40:00", "dur": "00:05:00", "av": "", "note": "" },
+  { "id": 13, "desc": "Forrett serveres", "who": "Kjøkken", "type": "Mat", "start": "17:45:00", "dur": "00:20:00", "av": "", "note": "" },
+  { "id": 14, "desc": "Tale: Brudens Far", "who": "Far", "type": "Tale", "start": "18:05:00", "dur": "00:05:00", "av": "", "note": "" },
   
-  { "id": 45, "desc": "Film. Hilsen fra Jop og Anna Marie", "who": "LLB", "type": "Film", "start": "20:57:40", "dur": "00:02:00" },
-  { "id": 46, "desc": "Sanginnslag fra familien til Georg", "who": "IL", "type": "Playback", "start": "20:59:40", "dur": "00:03:00" },
-  { "id": 47, "desc": "Hilsninger fra familien til Georg", "who": "Fam", "type": "Tale", "start": "21:02:40", "dur": "00:10:00" },
-  { "id": 48, "desc": "Film: Hilsen fra guttene i Bergen", "who": "LLB", "type": "Film", "start": "21:12:40", "dur": "00:02:00" },
-  { "id": 49, "desc": "Sang gutter Bergen (HV 408)", "who": "BT", "type": "Sang", "start": "21:14:40", "dur": "00:05:00" },
-  { "id": 50, "desc": "Korte hilsninger fra gutter (4 stk)", "who": "", "type": "Tale", "start": "21:19:40", "dur": "00:04:00" },
-  { "id": 51, "desc": "Film: Hilsen fra jenter fra Sydney", "who": "LLB", "type": "Film", "start": "21:23:40", "dur": "00:04:00" },
-  { "id": 52, "desc": "Innslag sang jenter...", "who": "", "type": "Sang", "start": "21:27:40", "dur": "00:03:00" }
+  { "id": 45, "desc": "Film. Hilsen fra Jop og Anna Marie", "who": "LLB", "type": "Film", "start": "20:57:40", "dur": "00:02:00", "av": "", "note": "Fam. Lindberg går opp under filmen" },
+  { "id": 46, "desc": "Sanginnslag fam. til Georg", "who": "IL", "type": "Playback", "start": "20:59:40", "dur": "00:03:00", "av": "Tekst på storskjerm", "note": "" },
+  { "id": 47, "desc": "Hilsninger fam. til Georg", "who": "Fam", "type": "Tale", "start": "21:02:40", "dur": "00:10:00", "av": "", "note": "HP fordeler tiden" },
+  { "id": 48, "desc": "Film: Hilsen gutter Bergen", "who": "LLB", "type": "Film", "start": "21:12:40", "dur": "00:02:00", "av": "Film", "note": "Guttene går opp under filmen" },
+  { "id": 49, "desc": "Sang gutter Bergen (HV 408)", "who": "BT", "type": "Sang", "start": "21:14:40", "dur": "00:05:00", "av": "Tekst på sceneskjerm", "note": "Bandet spiller" },
+  { "id": 50, "desc": "Korte hilsninger gutter", "who": "", "type": "Tale", "start": "21:19:40", "dur": "00:04:00", "av": "", "note": "1 min på hver" },
+  { "id": 51, "desc": "Film: Hilsen jenter Sydney", "who": "LLB", "type": "Film", "start": "21:23:40", "dur": "00:04:00", "av": "Film", "note": "Jentene går opp under filmen" },
+  { "id": 52, "desc": "Innslag sang jenter...", "who": "", "type": "Sang", "start": "21:27:40", "dur": "00:03:00", "av": "", "note": "" }
 ]
