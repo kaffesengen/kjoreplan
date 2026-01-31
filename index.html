@@ -1,1 +1,36 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vi3000 Event Controller</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <div id="login-overlay">
+        <div class="login-box">
+            <h1>SYSTEM ACCESS</h1>
+            <p>Soundcraft Vi3000 Interface</p>
+            <input type="text" id="username" placeholder="USER" autocomplete="off">
+            <input type="password" id="password" placeholder="PASSWORD">
+            <button onclick="attemptLogin()">LOGIN</button>
+            <p id="error-msg"></p>
+        </div>
+    </div>
+
+    <div id="app-container" style="display:none;">
+        <div id="header">
+            <div id="clock">00:00:00</div>
+            <div id="controls">
+                <button onclick="toggleFullScreen()" id="fs-btn">FULLSCREEN</button>
+            </div>
+        </div>
+
+        <div id="schedule-container">
+            </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
