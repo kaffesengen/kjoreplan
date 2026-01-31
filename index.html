@@ -6,9 +6,7 @@
     <title>Vi3000 Event Controller</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-
-    <div id="login-overlay">
+<body class="mode-auto"> <div id="login-overlay">
         <div class="login-box">
             <h1>SYSTEM ACCESS</h1>
             <p>Soundcraft Vi3000 Interface</p>
@@ -23,6 +21,7 @@
         <div id="header">
             <div id="clock">00:00:00</div>
             <div id="controls">
+                <button onclick="cycleViewMode()" id="view-btn">VIEW: AUTO</button>
                 <button onclick="toggleFullScreen()" id="fs-btn">FULLSCREEN</button>
             </div>
         </div>
