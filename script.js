@@ -1,8 +1,26 @@
-// CONFIG
+// ==========================================
+// 1. LIM INN FIREBASE CONFIG HER (FRA GOOGLE)
+// ==========================================
+const firebaseConfig = {
+    apiKey: "AIzaSyAHWKMFrjLO0golIkfpdfbEyL8FxWuivbA",
+    authDomain: "bryllup2026-3d2c1.firebaseapp.com",
+    databaseURL: "https://bryllup2026-3d2c1-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "bryllup2026-3d2c1",
+    storageBucket: "bryllup2026-3d2c1.firebasestorage.app",
+    messagingSenderId: "843855995608",
+    appId: "1:843855995608:web:21f2ab82e95e86bce36dad"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// ==========================================
+// CONFIG & DOM
+// ==========================================
 const USER = "admin";
 const PASS = "Brunstad2020";
 
-// DOM
 const loginOverlay = document.getElementById('login-overlay');
 const appContainer = document.getElementById('app-container');
 const container = document.getElementById('schedule-container');
@@ -11,19 +29,18 @@ const errorMsg = document.getElementById('error-msg');
 const viewBtn = document.getElementById('view-btn');
 
 let scheduleData = [];
+let dbState = {}; // Her lagrer vi data fra Firebase (live)
 let wakeLock = null;
 const modes = ['auto', 'phone', 'tablet', 'desktop'];
 let currentModeIndex = 0;
 
-// --- LOGIN ---
+// ==========================================
+// AUTH & INIT
+// ==========================================
 function attemptLogin() {
     const u = document.getElementById('username').value;
     const p = document.getElementById('password').value;
-
-    // HER ER ENDRINGEN:
-    // Vi legger til .toLowerCase() på 'u' (input) og 'USER' (fasit)
     if (u.toLowerCase() === USER.toLowerCase() && p === PASS) {
-        
         loginOverlay.style.display = 'none';
         initApp();
         requestWakeLock();
@@ -34,47 +51,57 @@ function attemptLogin() {
 }
 document.getElementById('password').addEventListener('keyup', (e) => { if(e.key==='Enter') attemptLogin() });
 
-// --- VIEW MODES ---
-function cycleViewMode() {
-    document.body.classList.remove('mode-' + modes[currentModeIndex]);
-    currentModeIndex = (currentModeIndex + 1) % modes.length;
-    const newMode = modes[currentModeIndex];
-    document.body.classList.add('mode-' + newMode);
-    viewBtn.innerText = "VIEW: " + newMode.toUpperCase();
-}
-
-// --- APP INIT ---
 async function initApp() {
     try {
+        // 1. Hent den statiske listen (tekster, tider)
         const response = await fetch('data.json');
         scheduleData = await response.json();
-        renderSchedule();
+
+        // 2. Koble på Firebase lytter (Real-time!)
+        // Hver gang noen endrer noe i databasen, kjøres denne koden:
+        db.ref('status').on('value', (snapshot) => {
+            dbState = snapshot.val() || {};
+            // Vi rendrer på nytt når data endres
+            renderSchedule(); 
+        });
+
+        // Start klokke
         setInterval(updateClock, 1000);
         updateClock();
+
     } catch (e) {
         console.error(e);
-        container.innerHTML = "<div style='color:red; padding:20px; text-align:center;'>Error loading data.json</div>";
+        container.innerHTML = "<div style='color:red; padding:20px; text-align:center;'>Error loading data</div>";
     }
 }
 
-// --- RENDER ---
+// ==========================================
+// RENDER (Tegner listen)
+// ==========================================
 function renderSchedule() {
-    container.innerHTML = '';
-    const savedDoneState = JSON.parse(localStorage.getItem('weddingDoneState')) || {};
-    const savedEdits = JSON.parse(localStorage.getItem('weddingEdits')) || {};
+    // Husk posisjon så vi ikke hopper til toppen ved oppdatering
+    const scrollPos = container.scrollTop;
 
-    scheduleData.forEach((item, index) => {
+    // Tøm container, men ikke hvis vi driver og skriver akkurat nå (litt hacky, men ok for i dag)
+    // Enklere løsning: Vi tegner alt på nytt, men mister fokus hvis vi skriver.
+    // Siden "blur" lagrer, går det fint.
+    
+    container.innerHTML = '';
+
+    scheduleData.forEach((item) => {
         if (item.type === 'header') {
             const div = document.createElement('div');
             div.className = `section-header ${item.class || ''}`;
             div.innerHTML = `<span>${item.start.substr(0,5)}</span> ${item.title}`;
             container.appendChild(div);
         } else {
-            // Merge defaults with saved edits
-            const avText = savedEdits[item.id + '_av'] !== undefined ? savedEdits[item.id + '_av'] : (item.av || '');
-            const noteText = savedEdits[item.id + '_note'] !== undefined ? savedEdits[item.id + '_note'] : (item.note || '');
+            // Hent live data fra dbState, eller bruk default fra JSON
+            const liveItem = dbState[item.id] || {};
             
-            const isDone = savedDoneState[item.id] ? 'done' : '';
+            const isDone = liveItem.done ? 'done' : '';
+            const avText = liveItem.av !== undefined ? liveItem.av : (item.av || '');
+            const noteText = liveItem.note !== undefined ? liveItem.note : (item.note || '');
+
             const start = parseTime(item.start);
             const durSec = parseDuration(item.dur);
             const end = new Date(start.getTime() + durSec * 1000);
@@ -85,14 +112,12 @@ function renderSchedule() {
             wrapper.dataset.startObj = start.toISOString();
             wrapper.dataset.endObj = end.toISOString();
 
-            // Main Row Content
             wrapper.innerHTML = `
                 <div class="row-main">
-                    <div class="col" onclick="toggleDone(${item.id})">
+                    <div class="col" onclick="toggleDone(${item.id}, ${!liveItem.done})">
                         <div class="btn-check" id="btn-${item.id}">${isDone ? 'OFF' : 'ON'}</div>
                     </div>
                     <div class="col time">${item.start.substr(0,5)}</div>
-                    
                     <div class="col col-who col-desktop">${item.who || '-'}</div>
 
                     <div class="col desc-container">
@@ -100,10 +125,14 @@ function renderSchedule() {
                         <div class="meta">${item.type || ''} ${item.who ? ' • ' + item.who : ''}</div>
                     </div>
                     
-                    <div class="col col-av col-desktop" contenteditable="true" onblur="saveEdit(${item.id}, 'av', this)">${avText}</div>
-                    <div class="col col-note col-desktop" contenteditable="true" onblur="saveEdit(${item.id}, 'note', this)">${noteText}</div>
+                    <div class="col col-av col-desktop" contenteditable="true" 
+                         onblur="saveEdit(${item.id}, 'av', this)">${avText}</div>
+                    <div class="col col-note col-desktop" contenteditable="true" 
+                         onblur="saveEdit(${item.id}, 'note', this)">${noteText}</div>
                     
-                    <div class="col dur" style="justify-content:flex-end; font-family:'Courier New'; color:#888;">${item.dur.substr(3,2)}m</div>
+                    <div class="col dur" style="justify-content:flex-end; font-family:'Courier New'; color:#888;">
+                        ${item.dur.substr(3,2)}m
+                    </div>
 
                     <div class="col col-expand">
                         <button class="btn-expand" id="exp-${item.id}" onclick="toggleDetails(${item.id})">▼</button>
@@ -119,60 +148,63 @@ function renderSchedule() {
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">LYD / BILDE (Trykk for å redigere)</span>
-                        <div class="detail-content" style="color:#8fd" contenteditable="true" onblur="saveEdit(${item.id}, 'av', this)">${avText || 'Ingen info'}</div>
+                        <div class="detail-content" style="color:#8fd" contenteditable="true" 
+                             onblur="saveEdit(${item.id}, 'av', this)">${avText || 'Ingen info'}</div>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">KOMMENTARER (Trykk for å redigere)</span>
-                        <div class="detail-content" style="color:#fd8; font-style:italic" contenteditable="true" onblur="saveEdit(${item.id}, 'note', this)">${noteText || 'Ingen info'}</div>
+                        <div class="detail-content" style="color:#fd8; font-style:italic" contenteditable="true" 
+                             onblur="saveEdit(${item.id}, 'note', this)">${noteText || 'Ingen info'}</div>
                     </div>
                 </div>
             `;
             container.appendChild(wrapper);
         }
     });
+    
+    // Restore scroll position
+    container.scrollTop = scrollPos;
+    // Restore opened details based on local UI state (optional complexity skipped for stability)
 }
 
-// --- LOGIC ---
+// ==========================================
+// ACTIONS (Sender til Firebase)
+// ==========================================
+
+function toggleDone(id, newState) {
+    // Oppdaterer "status/ID/done" i databasen
+    db.ref('status/' + id + '/done').set(newState);
+}
+
 function saveEdit(id, field, element) {
     const newVal = element.innerText;
-    const savedEdits = JSON.parse(localStorage.getItem('weddingEdits')) || {};
-    
-    // Save the edit
-    savedEdits[id + '_' + field] = newVal;
-    localStorage.setItem('weddingEdits', JSON.stringify(savedEdits));
-
-    // Sync Desktop/Phone fields so they match instantly if view changes
-    // (Simple reload logic or targeted DOM update could work, reloading is safer for consistency)
-    // console.log("Saved", field, newVal);
+    // Oppdaterer "status/ID/av" eller "status/ID/note"
+    db.ref('status/' + id + '/' + field).set(newVal);
 }
 
+// ==========================================
+// UTILS & VIEW
+// ==========================================
 function toggleDetails(id) {
     const box = document.getElementById('details-' + id);
     const btn = document.getElementById('exp-' + id);
-    box.classList.toggle('open');
-    btn.classList.toggle('rotated');
+    if(box) box.classList.toggle('open');
+    if(btn) btn.classList.toggle('rotated');
 }
 
-function toggleDone(id) {
-    const wrapper = document.getElementById('wrapper-' + id);
-    const btn = document.getElementById('btn-' + id);
-    wrapper.classList.toggle('done');
-    
-    const savedState = JSON.parse(localStorage.getItem('weddingDoneState')) || {};
-    if (wrapper.classList.contains('done')) {
-        savedState[id] = true;
-        btn.innerText = "OFF";
-    } else {
-        delete savedState[id];
-        btn.innerText = "ON";
-    }
-    localStorage.setItem('weddingDoneState', JSON.stringify(savedState));
+function cycleViewMode() {
+    document.body.classList.remove('mode-' + modes[currentModeIndex]);
+    currentModeIndex = (currentModeIndex + 1) % modes.length;
+    const newMode = modes[currentModeIndex];
+    document.body.classList.add('mode-' + newMode);
+    viewBtn.innerText = "VIEW: " + newMode.toUpperCase();
 }
 
 function updateClock() {
     const now = new Date();
     clockEl.innerText = now.toLocaleTimeString('no-NO', { hour12: false });
 
+    // CSS Active State Logic (Calculation only, no re-render)
     const wrappers = document.querySelectorAll('.row-wrapper');
     wrappers.forEach(wrap => {
         if (wrap.classList.contains('done')) return;
@@ -183,15 +215,14 @@ function updateClock() {
         if (now >= start && now < end) {
             wrap.classList.add('active');
             const pct = ((now - start) / (end - start)) * 100;
-            bar.style.width = pct + "%";
+            if(bar) bar.style.width = pct + "%";
         } else {
             wrap.classList.remove('active');
-            bar.style.width = "0%";
+            if(bar) bar.style.width = "0%";
         }
     });
 }
 
-// --- UTILS ---
 function parseTime(t) {
     const d = new Date();
     const parts = t.replace(/\./g,':').split(':');
@@ -202,6 +233,7 @@ function parseDuration(d) {
     const parts = d.replace(/\./g,':').split(':');
     return (parseInt(parts[0])*3600) + (parseInt(parts[1])*60) + parseInt(parts[2]);
 }
+
 function toggleFullScreen() {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen();
