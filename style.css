@@ -1,259 +1,156 @@
 :root {
-    --bg-color: #050505;
-    --panel-bg: #141414;
-    --panel-hover: #1f1f1f;
-    --panel-expanded: #222;
-    --text-main: #e0e0e0;
-    --text-dim: #888;
-    --accent-blue: #00aaff;
-    --accent-green: #00ff00;
-    --accent-red: #ff3333;
-    --accent-pink: #ff00ff;
-    --border-color: #333;
-    --glow-blue: 0 0 10px rgba(0, 170, 255, 0.6);
-    --glow-text: 0 0 8px rgba(255, 255, 255, 0.5);
-    --font-stack: 'Segoe UI', 'Roboto Condensed', sans-serif;
+    --bg: #0a0a0c;
+    --panel: #16161a;
+    --accent: #00f2ff;
+    --success: #00ff88;
+    --border: #2d2d35;
+    --text: #e1e1e6;
 }
-
-* { box-sizing: border-box; }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    font-family: var(--font-stack);
-    margin: 0; padding: 0;
-    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    margin: 0;
     height: 100vh;
-    width: 100vw;
+    overflow: hidden;
 }
 
-/* --- LOGIN --- */
+#app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+header {
+    background: var(--panel);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--accent);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+#checklist-selector {
+    background: #000;
+    color: var(--accent);
+    border: 1px solid var(--border);
+    padding: 8px;
+    font-weight: bold;
+    border-radius: 4px;
+    outline: none;
+}
+
+.status-dot {
+    width: 10px; height: 10px;
+    background: var(--success);
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 10px;
+    box-shadow: 0 0 10px var(--success);
+}
+
+/* Tabell-oppsett */
+.row-main {
+    display: grid;
+    grid-template-columns: 80px 1fr 100px 80px;
+    padding: 15px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+}
+
+#list-header {
+    background: #000;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #666;
+    letter-spacing: 1px;
+}
+
+.row-wrapper {
+    transition: 0.3s;
+    background: var(--panel);
+}
+
+.row-wrapper.checked {
+    background: rgba(0, 255, 136, 0.05);
+    opacity: 0.8;
+}
+
+.row-wrapper.checked .status-badge {
+    background: var(--success);
+    color: #000;
+}
+
+.id-col { font-family: monospace; color: var(--accent); font-weight: bold; }
+.room-name { font-weight: 600; margin-bottom: 4px; }
+.room-meta { font-size: 11px; color: #888; }
+
+.note-input {
+    width: 100%;
+    background: #000;
+    border: 1px solid var(--border);
+    color: #ccc;
+    padding: 5px;
+    font-size: 12px;
+    margin-top: 8px;
+    border-radius: 3px;
+}
+
+.status-badge {
+    background: #333;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.check-btn {
+    background: var(--accent);
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+/* Mobile Optimering (Z Fold 5 & Phones) */
+@media (max-width: 600px) {
+    .row-main {
+        grid-template-columns: 70px 1fr 70px;
+    }
+    .status-col { display: none; } /* Skjuler status-tekst på smal skjerm */
+    .id-col { font-size: 12px; }
+    .room-name { font-size: 14px; }
+    header { padding: 5px 10px; }
+}
+
+/* PC / Utbrettet Fold Optimering */
+@media (min-width: 1000px) {
+    #app-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        border-left: 1px solid var(--border);
+        border-right: 1px solid var(--border);
+    }
+}
+
+#checklist-container {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+/* Login Overlay (samme som før) */
 #login-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: #000; z-index: 9999;
     display: flex; align-items: center; justify-content: center;
 }
 .login-box {
-    background: #111; border: 2px solid var(--accent-blue); padding: 30px;
+    background: #111; border: 2px solid var(--accent); padding: 30px;
     text-align: center; width: 90%; max-width: 350px;
-    box-shadow: var(--glow-blue);
 }
-.login-box h1 { color: var(--accent-blue); margin: 0 0 10px 0; font-size: 24px; text-shadow: var(--glow-blue); }
-.login-box input { width: 100%; padding: 12px; margin-bottom: 10px; background: #222; border: 1px solid #444; color: #fff; text-align: center; font-size: 16px; outline: none; }
-.login-box input:focus { border-color: var(--accent-blue); }
-.login-box button { width: 100%; padding: 12px; background: var(--accent-blue); border: none; font-weight: bold; cursor: pointer; transition: 0.2s; }
-.login-box button:hover { background: #fff; }
-#error-msg { color: var(--accent-red); height: 20px; font-size: 12px; margin-top: 5px;}
-
-/* --- MAIN LAYOUT --- */
-#app-container {
-    display: flex;
-    flex-direction: column; /* VIKTIG: Tvinger header over innhold */
-    height: 100%;
-    width: 100%;
-}
-
-/* --- HEADER --- */
-#header {
-    background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
-    border-bottom: 2px solid var(--accent-blue);
-    padding: 0 15px;
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center;
-    height: 60px; 
-    flex-shrink: 0; 
-    z-index: 100;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-}
-
-#clock {
-    font-size: 32px; 
-    font-weight: 700; 
-    color: #fff;
-    font-variant-numeric: tabular-nums;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px var(--accent-blue);
-    letter-spacing: 1px;
-}
-
-#controls { display: flex; gap: 10px; }
-#controls button {
-    background: #222; border: 1px solid #444; color: #ccc;
-    padding: 8px 15px; font-weight: bold; border-radius: 4px;
-    font-size: 12px; cursor: pointer; min-width: 70px;
-    transition: all 0.2s ease;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-}
-#controls button:hover {
-    background: #333; color: #fff; border-color: #666;
-    box-shadow: 0 0 8px rgba(255,255,255,0.2);
-}
-#controls button:active { background: var(--accent-blue); color: #000; }
-
-/* --- SCHEDULE LIST --- */
-#schedule-container {
-    flex-grow: 1; 
-    overflow-y: auto; 
-    background: #000;
-    width: 100%;
-    padding-bottom: 80px; /* Space for scroll */
-}
-
-/* Section Headers */
-.section-header {
-    background: #0a0a0a; color: var(--accent-blue);
-    padding: 15px; font-size: 18px; font-weight: 900;
-    text-transform: uppercase; border-bottom: 1px solid var(--accent-blue);
-    position: sticky; top: 0; z-index: 20;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.8);
-    letter-spacing: 2px;
-}
-.section-header.fest { color: var(--accent-pink); border-bottom-color: var(--accent-pink); }
-
-/* Rows */
-.row-wrapper {
-    border-bottom: 1px solid var(--border-color);
-    background: var(--panel-bg);
-    transition: background 0.2s ease, transform 0.2s ease;
-}
-
-/* Hover Effect - Liv i siden */
-.row-wrapper:hover {
-    background: var(--panel-hover);
-    z-index: 5;
-}
-
-.row-wrapper.done { opacity: 0.3; filter: grayscale(100%); }
-.row-wrapper.active {
-    background: #101a10;
-    border-left: 4px solid var(--accent-green);
-    box-shadow: inset 0 0 20px rgba(0, 255, 0, 0.05);
-}
-
-.row-main {
-    display: grid;
-    align-items: center;
-    padding: 4px 0;
-    position: relative;
-    min-height: 55px;
-}
-
-/* Columns */
-.col { padding: 5px 10px; display: flex; align-items: center; overflow: hidden;}
-.time { font-family: 'Courier New', monospace; font-weight: bold; color: var(--accent-blue); font-size: 17px; text-shadow: 0 0 5px rgba(0, 170, 255, 0.4); }
-.desc { font-size: 16px; font-weight: 500; line-height: 1.3; color: #eee; }
-.meta { font-size: 12px; color: var(--text-dim); margin-top: 3px; text-transform: uppercase; font-weight: 600;}
-
-/* Editable Fields Style */
-[contenteditable="true"] {
-    border-bottom: 1px dashed transparent;
-    transition: border 0.2s;
-    cursor: text;
-}
-[contenteditable="true"]:hover { border-bottom-color: #555; }
-[contenteditable="true"]:focus { 
-    border-bottom: 1px solid var(--accent-blue); 
-    outline: none; 
-    background: rgba(0,0,0,0.3);
-    color: #fff;
-}
-
-/* Specific Columns */
-.col-av { color: #8fd; font-size: 13px; }
-.col-note { color: #fd8; font-style: italic; font-size: 13px; }
-.col-who { color: #ccc; font-weight: bold; font-size: 13px; }
-
-/* Buttons inside row */
-.btn-check {
-    background: #222; border: 1px solid #444; color: #666;
-    width: 36px; height: 36px; border-radius: 4px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; cursor: pointer; transition: all 0.2s;
-    user-select: none;
-}
-.btn-check:hover { border-color: #888; color: #fff; box-shadow: 0 0 5px rgba(255,255,255,0.2); }
-.row-wrapper.done .btn-check { color: var(--accent-red); border-color: #500; background: #1a0505; text-shadow: 0 0 5px var(--accent-red); }
-
-.btn-expand {
-    background: transparent; border: none; color: #555;
-    font-size: 12px; cursor: pointer; padding: 10px;
-    transition: transform 0.3s, color 0.3s;
-}
-.btn-expand:hover { color: #fff; }
-.btn-expand.rotated { transform: rotate(180deg); color: var(--accent-blue); }
-
-/* Progress Bar */
-.progress-bar {
-    position: absolute; bottom: 0; left: 0; height: 2px;
-    background: var(--accent-green); width: 0%; transition: width 1s linear;
-    z-index: 10; box-shadow: 0 0 5px var(--accent-green);
-}
-
-/* Details Box (Phone) */
-.details-box {
-    max-height: 0; overflow: hidden; background: var(--panel-expanded);
-    transition: max-height 0.3s ease-out, padding 0.3s ease;
-    border-top: 1px solid transparent;
-}
-.details-box.open { padding: 15px; border-top-color: #333; max-height: 400px; }
-.detail-item { margin-bottom: 10px; font-size: 14px; }
-.detail-label { color: #666; font-size: 10px; text-transform: uppercase; display: block; margin-bottom: 4px; font-weight: bold;}
-
-
-/* ================= MODES ================= */
-
-/* 1. PHONE (Default) */
-body.mode-phone .row-main, body.mode-auto .row-main { 
-    grid-template-columns: 50px 60px 1fr 40px; 
-}
-body.mode-phone .col-desktop, body.mode-auto .col-desktop { display: none; }
-body.mode-phone .col-expand, body.mode-auto .col-expand { display: flex; justify-content: center; }
-
-/* 2. TABLET */
-body.mode-tablet .row-main {
-    grid-template-columns: 60px 70px 60px 1fr 60px;
-}
-body.mode-tablet .col-expand, body.mode-tablet .details-box { display: none !important; } 
-body.mode-tablet .col-av, body.mode-tablet .col-note { display: none; } 
-body.mode-tablet .col-who { display: flex; }
-body.mode-tablet .desc { font-size: 18px; }
-
-/* 3. DESKTOP */
-body.mode-desktop .row-main {
-    grid-template-columns: 50px 70px 60px 1.5fr 1fr 1fr 60px;
-    padding: 6px 0;
-}
-body.mode-desktop #schedule-container { max-width: 1600px; margin: 0 auto; border-inline: 1px solid #222; }
-body.mode-desktop .col-expand, body.mode-desktop .details-box { display: none !important; }
-body.mode-desktop .col-av, body.mode-desktop .col-note, body.mode-desktop .col-who { display: flex; }
-body.mode-desktop .col-desktop { display: flex; }
-
-/* AUTO overrides */
-@media (min-width: 768px) {
-    body.mode-auto .row-main { grid-template-columns: 60px 70px 60px 1fr 60px; }
-    body.mode-auto .col-expand, body.mode-auto .details-box { display: none !important; }
-    body.mode-auto .col-desktop { display: none; }
-    body.mode-auto .col-who { display: flex; }
-}
-@media (min-width: 1200px) {
-    body.mode-auto .row-main { grid-template-columns: 50px 70px 60px 1.5fr 1fr 1fr 60px; }
-    body.mode-auto .col-av, body.mode-auto .col-note, body.mode-auto .col-who { display: flex; }
-}
-
-/* --- LIST HEADER STYLE --- */
-#list-header {
-    background: #0d0d0d;
-    border-bottom: 1px solid #333;
-    padding: 5px 0;
-    font-weight: bold;
-    letter-spacing: 1px;
-    z-index: 90;
-    flex-shrink: 0; /* Hindrer at den krymper */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-}
-
-/* Sørg for at overskriftene følger samme synlighetsregler som innholdet */
-#list-header .col {
-    text-transform: uppercase;
-    color: #666; /* Standard farge for header-tekst */
-}
+.login-box input { width: 100%; padding: 12px; margin-bottom: 10px; background: #222; border: 1px solid #444; color: #fff; }
+.login-box button { width: 100%; padding: 12px; background: var(--accent); border: none; font-weight: bold; }
