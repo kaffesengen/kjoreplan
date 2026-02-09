@@ -1,167 +1,115 @@
 [
-  { "type": "header", "title": "VIELSE", "start": "16.30.00" },
-  { 
-    "id": 1, "desc": "Inngang: Promise of the World", "who": "DO/LDN", "type": "Playback", "start": "16.30.00", "dur": "00.03.00",
-    "av": "Bakgrunnsbilde på midt og sideskjermer", "note": "Alle Reiser seg. Forlovere og brudgom først. Brudepiker, brudens far og bruden. Brudepiker setter seg på siden av scenen."
-  },
-  { "id": 2, "desc": "Velkomst v/Daniel", "who": "DO", "type": "Tale", "start": "16.33.00", "dur": "00.02.00", "av": "", "note": "" },
-  { "id": 3, "desc": "Bønn v/Enok", "who": "DO", "type": "Tale", "start": "16.35.00", "dur": "00.01.00", "av": "", "note": "" },
-  { 
-    "id": 4, "desc": "Allsang: HV 212 Jesus Kristus selv forener", "who": "DO/LDN", "type": "Band", "start": "16.36.00", "dur": "00.03.00",
-    "av": "Sangtekst på skjerm", "note": "Seasound synger med fra salen"
-  },
-  { "id": 5, "desc": "Vielse v/Daniel", "who": "", "type": "Seremoni", "start": "16.39.00", "dur": "00.10.00", "av": "", "note": "" },
-  { 
-    "id": 6, "desc": "Solosang Kjetil Johnsen: FMB 163", "who": "DO/LDN", "type": "Solo/Band", "start": "16.49.00", "dur": "00.03.00",
-    "av": "", "note": "Solist må sitte klar på/ved scenen fra starten av vielsen. Lydia gir beskjed"
-  },
-  { "id": 7, "desc": "Tale v/Daniel", "who": "DO", "type": "Tale", "start": "16.52.00", "dur": "00.04.00", "av": "Bibelvers på skjerm", "note": "" },
-  { 
-    "id": 8, "desc": "Forbønn v/Daniel", "who": "DO", "type": "Bønn", "start": "16.56.00", "dur": "00.02.00",
-    "av": "", "note": "Bandet sitter helt klar til å starte spilling rett etter bønn. Starte uoppfordret etter bønn"
-  },
-  { "id": 9, "desc": "Signering: Instrumental (Buble)", "who": "DO/LDN", "type": "Band", "start": "16.58.00", "dur": "00.02.00", "av": "", "note": "" },
-  { 
-    "id": 10, "desc": "Presentere ekteparet / Kiss the bride", "who": "DO", "type": "Seremoni", "start": "17.00.00", "dur": "00.02.00",
-    "av": "", "note": "Applaus. Sette på musikken etter kiss the bride"
-  },
-  { 
-    "id": 11, "desc": "Utgang: This Will Be (An Everlasting Love)", "who": "DO/LDN", "type": "Playback", "start": "17.02.00", "dur": "00.04.00",
-    "av": "Info på skjermer om skål i Fjordblikk, idet playback går på. Avtale med Lydia/Daniel", "note": "Brudeparet går ned rød løper -> Fjordblikk. Åpne begge veggene. Servitører klare. Hente Daniel O. sin mygg."
-  },
-  { 
-    "id": 12, "desc": "Mødrene utbringer skål i Fjordblikk", "who": "LDN", "type": "Bobler/kake", "start": "17.06.00", "dur": "00.01.00",
-    "av": "Håndholdt mikrofon, evt stativ.", "note": "Mikrofon må stå klar før vielsen. Applaus + gratulasjoner + kake"
-  },
-  { 
-    "id": 13, "desc": "Pause / Mingling", "who": "", "type": "Pause", "start": "17.07.00", "dur": "00.23.00",
-    "av": "Info på skjermer om kaffi og når festen starter opp igjen.", "note": "Rolig bakgrunnsmusikk"
-  },
-
-  { "type": "header", "title": "FEST", "start": "17.30.00", "class": "fest" },
-
-  { 
-    "id": 24, "desc": "Velkomst fest + program", "who": "GG", "type": "Tale", "start": "17.30.00", "dur": "00.02.00",
-    "av": "Program på skjermen", "note": "Bandet spiller litt instrumental før det starter"
-  },
-  { 
-    "id": 25, "desc": "Sang Seasound HV 283 - Jeg priser deg", "who": "KOM", "type": "Sang", "start": "17.32.00", "dur": "00.05.00",
-    "av": "Tekst på sceneskjerm", "note": "Står klar på scenen 17:30"
-  },
-  { "id": 26, "desc": "Tale: David N", "who": "", "type": "Tale", "start": "17.37.00", "dur": "00.13.00", "av": "", "note": "" },
-  { 
-    "id": 27, "desc": "Allsang", "who": "TS", "type": "Allsang", "start": "17.50.00", "dur": "00.05.00",
-    "av": "Tekst på storskjerm", "note": "SS er forsangere"
-  },
-  { "id": 28, "desc": "Tale: Daniel", "who": "", "type": "Tale", "start": "17.55.00", "dur": "00.08.00", "av": "", "note": "" },
-  { "id": 29, "desc": "Tale: Svein J", "who": "", "type": "Tale", "start": "18.03.00", "dur": "00.05.00", "av": "", "note": "" },
-  { "id": 30, "desc": "Solo: Phebe Helgheim HV 88", "who": "KOM", "type": "Solo/band", "start": "18.08.00", "dur": "00.05.00", "av": "", "note": "" },
-  { "id": 31, "desc": "Tale: Sveinug Vårdal", "who": "", "type": "Tale", "start": "18.13.00", "dur": "00.03.00", "av": "", "note": "" },
-  { "id": 32, "desc": "Tale: Stefanie Struik", "who": "", "type": "Tale", "start": "18.16.00", "dur": "00.03.00", "av": "", "note": "" },
-  { "id": 33, "desc": "Tale: Sebastian Opitz", "who": "", "type": "Tale", "start": "18.19.00", "dur": "00.02.00", "av": "", "note": "" },
-  { 
-    "id": 34, "desc": "Allsang", "who": "TS", "type": "Allsang", "start": "18.21.00", "dur": "00.05.00",
-    "av": "Tekst på storskjerm", "note": "Servitører setter drikke på bordene"
-  },
-  { "id": 35, "desc": "Bordverset", "who": "DHB", "type": "Allsang", "start": "18.26.00", "dur": "00.02.00", "av": "Tekst på storskjerm", "note": "" },
-  { "id": 36, "desc": "Presentasjon av meny", "who": "GG", "type": "Info", "start": "18.28.00", "dur": "00.01.00", "av": "Meny/allergi på storskjerm", "note": "" },
-  { 
-    "id": 37, "desc": "Middag + dessert", "who": "PHR", "type": "Mat/Pause", "start": "18.29.00", "dur": "00.55.00",
-    "av": "Bytt info fra meny til 'Festen fortsetter kl...'", "note": "Underveis i pausen"
-  },
-  { 
-    "id": 38, "desc": "Bildekavalkade", "who": "GG", "type": "Film", "start": "19.24.00", "dur": "00.08.00",
-    "av": "Film", "note": "Felles kavalkade på slutten av pausen"
-  },
-  { 
-    "id": 39, "desc": "Pause fortsetter + 5 min nedtelling", "who": "", "type": "Pause", "start": "19.32.00", "dur": "00.05.00",
-    "av": "Bilde med 5 min nedtelling", "note": "Toalettpause før start"
-  },
-  { 
-    "id": 40, "desc": "Sang Seasound - Troens fakkel", "who": "KOM", "type": "Sang", "start": "19.37.00", "dur": "00.05.00",
-    "av": "Tekst på sceneskjerm", "note": "Dag Helge synger noen steder i sangen"
-  },
-  { "id": 41, "desc": "Tale: William B", "who": "", "type": "Tale", "start": "19.42.00", "dur": "00.04.00", "av": "", "note": "" },
-  { "id": 42, "desc": "Tale: Jenneke Mensink", "who": "", "type": "Tale", "start": "19.46.00", "dur": "00.03.00", "av": "", "note": "" },
-  { "id": 43, "desc": "Tale: Forlover - Julia", "who": "", "type": "Tale", "start": "19.49.00", "dur": "00.02.00", "av": "", "note": "" },
-  { "id": 44, "desc": "Tale: Forlover - Sindre", "who": "", "type": "Tale", "start": "19.51.00", "dur": "00.02.00", "av": "", "note": "" },
-  { 
-    "id": 45, "desc": "Allsang", "who": "TS", "type": "Allsang", "start": "19.53.00", "dur": "00.05.00",
-    "av": "Tekst på storskjerm", "note": "Legge klar mikrofoner til familien"
-  },
-  { "id": 46, "desc": "Tale: Bruden", "who": "", "type": "Tale", "start": "19.58.00", "dur": "00.06.00", "av": "", "note": "" },
-  { "id": 47, "desc": "Tale: Brudgom", "who": "", "type": "Tale", "start": "20.04.00", "dur": "00.06.00", "av": "", "note": "" },
-  { "id": 48, "desc": "Allsang", "who": "", "type": "Sang", "start": "20.10.00", "dur": "00.04.00", "av": "Playback/film", "note": "" },
-  { 
-    "id": 49, "desc": "Tale: Foreldre (Tolk for Eunikes)", "who": "", "type": "Tale", "start": "20.14.00", "dur": "00.20.00",
-    "av": "", "note": "4 min på hver (6min på Eunike sine)"
-  },
-  { 
-    "id": 50, "desc": "Film: Musikkvideo fam Struik", "who": "LLB", "type": "Film", "start": "20.34.00", "dur": "00.02.40",
-    "av": "Playback/film", "note": "Familien Struik går opp under filmen"
-  },
-  { 
-    "id": 51, "desc": "Film: Hilsen David og Esther Struik", "who": "LLB", "type": "Film", "start": "20.36.40", "dur": "00.01.00",
-    "av": "", "note": "Familien Struik går opp under filmen"
-  },
-  { 
-    "id": 52, "desc": "Sanginnslag familien til Eunike", "who": "LLB", "type": "Playback", "start": "20.37.40", "dur": "00.05.00",
-    "av": "Playback. Tekst på storskjerm/scene", "note": ""
-  },
-  { 
-    "id": 53, "desc": "Hilsninger familien til Eunike", "who": "", "type": "Tale", "start": "20.42.40", "dur": "00.15.00",
-    "av": "", "note": "HP fordeler tiden"
-  },
-  { 
-    "id": 54, "desc": "Film: Hilsen Jop og Anna Marie", "who": "LLB", "type": "Film", "start": "20.57.40", "dur": "00.02.00",
-    "av": "", "note": "Fam. Lindberg går opp under filmen"
-  },
-  { 
-    "id": 55, "desc": "Sanginnslag familien til Georg", "who": "IL", "type": "Playback", "start": "20.59.40", "dur": "00.03.00",
-    "av": "Playback. Tekst på storskjerm/scene", "note": ""
-  },
-  { 
-    "id": 56, "desc": "Hilsninger familien til Georg", "who": "", "type": "Tale", "start": "21.02.40", "dur": "00.10.00",
-    "av": "", "note": "HP fordeler tiden"
-  },
-  { 
-    "id": 57, "desc": "Film: Hilsen gutter Bergen", "who": "LLB", "type": "Film", "start": "21.12.40", "dur": "00.02.00",
-    "av": "Film", "note": "Guttene går opp under filmen"
-  },
-  { 
-    "id": 58, "desc": "Sang gutter Bergen (HV 408)", "who": "BT", "type": "Sang", "start": "21.14.40", "dur": "00.05.00",
-    "av": "Tekst på sceneskjerm", "note": "Bandet spiller"
-  },
-  { 
-    "id": 59, "desc": "Korte hilsninger gutter (Jonathan + 3)", "who": "", "type": "Tale", "start": "21.19.40", "dur": "00.04.00",
-    "av": "", "note": "1 min på hver"
-  },
-  { 
-    "id": 60, "desc": "Film: Hilsen jenter Sydney", "who": "LLB", "type": "Film", "start": "21.23.40", "dur": "00.04.00",
-    "av": "Film", "note": "Jentene fra Nederland går opp under filmen"
-  },
-  { 
-    "id": 61, "desc": "Innslag sang jenter Nederland", "who": "TG/LLB", "type": "Sang", "start": "21.27.40", "dur": "00.05.00",
-    "av": "Playback/bilder storskjerm/bakskjerm", "note": "3 60+ damer fra NL reiser seg i salen. Mikrofon klar før."
-  },
-  { 
-    "id": 62, "desc": "Korte hilsninger jenter (4 stk)", "who": "", "type": "Tale", "start": "21.32.40", "dur": "00.04.00",
-    "av": "", "note": "1 min på hver"
-  },
-  { 
-    "id": 63, "desc": "Innslag sang, jenter fra Bergen", "who": "MH", "type": "Sang", "start": "21.36.40", "dur": "00.04.00",
-    "av": "Playback/bilder storskjerm/scene", "note": ""
-  },
-  { 
-    "id": 64, "desc": "Avslutning", "who": "GG", "type": "Info", "start": "21.40.40", "dur": "00.01.00",
-    "av": "", "note": "Informere om fingermat / tapas"
-  },
-  { 
-    "id": 65, "desc": "Avslutningssang", "who": "TS", "type": "Allsang", "start": "21.41.40", "dur": "00.04.00",
-    "av": "Tekst på storskjerm", "note": ""
-  },
-  { 
-    "id": 66, "desc": "SLUTT", "who": "", "type": "SLUTT", "start": "21.45.40", "dur": "00.00.00",
-    "av": "", "note": "LLB setter på Spotify"
-  }
+  { "id": "D80001", "room": "0820 Treningssenter", "etg": "0" },
+  { "id": "D80002", "room": "0010 Gymsal", "etg": "0" },
+  { "id": "D80003", "room": "0010 Gymsal", "etg": "0" },
+  { "id": "D80015", "room": "0070 Garderobe", "etg": "0" },
+  { "id": "D80016", "room": "0110 HC WC", "etg": "0" },
+  { "id": "D80019", "room": "0100 Garderobe", "etg": "0" },
+  { "id": "D80020", "room": "0002 Sluse/0121 gang", "etg": "0" },
+  { "id": "D80021", "room": "0001 Trapperom/Personal", "etg": "0" },
+  { "id": "DB0022", "room": "0001 Trapperom/Transportkorr", "etg": "0" },
+  { "id": "D80027", "room": "0170 Tekn. Rom for VS", "etg": "0" },
+  { "id": "D80037", "room": "0270 IKT-sentral", "etg": "0" },
+  { "id": "D80038", "room": "0280 Tavlerom", "etg": "0" },
+  { "id": "D80040", "room": "0300 Teknisk rom", "etg": "0" },
+  { "id": "D80041", "room": "0300 Teknisk rom", "etg": "0" },
+  { "id": "DU0042", "room": "0320 Varmesentral", "etg": "0" },
+  { "id": "D80043", "room": "0291 korridor nord", "etg": "0" },
+  { "id": "D10044", "room": "0002 sluse/0060 gang", "etg": "0" },
+  { "id": "D10045", "room": "0120 Bar/0130 Brygg", "etg": "0" },
+  { "id": "DU1009", "room": "135 Restaurant skyvedør", "etg": "1" },
+  { "id": "DU1012", "room": "141 Bar skyvedør", "etg": "1" },
+  { "id": "DR1019", "room": "146 Trapperom (fra restaurant)", "etg": "1" },
+  { "id": "DU1040", "room": "Kontor nord 1. etg", "etg": "1" },
+  { "id": "D81041", "room": "122 Hotellkorridor nord", "etg": "1" },
+  { "id": "D81054", "room": "122 Hotellkorridor (dobbel)", "etg": "1" },
+  { "id": "D81066", "room": "137 Teknisk sentral", "etg": "1" },
+  { "id": "D81068", "room": "146 Trapperom (fra hotell)", "etg": "1" },
+  { "id": "DB1070", "room": "138 IKT-lager (HC-WC)", "etg": "1" },
+  { "id": "DB1079", "room": "146 Hotellkorridor (fra foaje)", "etg": "1" },
+  { "id": "D11081", "room": "141 Bar (dobbel dør)", "etg": "1" },
+  { "id": "DU1087", "room": "141 Bar ytterdør (Salto)", "etg": "1" },
+  { "id": "D11101", "room": "1160 Foaje (slag dør)", "etg": "1" },
+  { "id": "DU1102", "room": "1160 Foaje (skyvedør)", "etg": "1" },
+  { "id": "DU1103", "room": "1150 Foaje (skyvedør øst)", "etg": "1" },
+  { "id": "DU1104", "room": "1150 Foaje (slag dør øst)", "etg": "1" },
+  { "id": "DU1106", "room": "1090 Gang (Mot HH)", "etg": "1" },
+  { "id": "DU1107", "room": "1100 Lager pissoar", "etg": "1" },
+  { "id": "DU1109", "room": "1130 Fjordblikk", "etg": "1" },
+  { "id": "DU1110", "room": "1130 Fjordblikk", "etg": "1" },
+  { "id": "DU1111", "room": "1130 Fjordblikk", "etg": "1" },
+  { "id": "DU1112", "room": "1130 Fjordblikk", "etg": "1" },
+  { "id": "DU1113", "room": "1140 Panoramasal", "etg": "1" },
+  { "id": "DU1114", "room": "1140 Panoramasal", "etg": "1" },
+  { "id": "DU1115", "room": "1140 Panoramasal", "etg": "1" },
+  { "id": "DU1116", "room": "1140 Panoramasal", "etg": "1" },
+  { "id": "DU1117", "room": "1140 Panoramasal (Salto)", "etg": "1" },
+  { "id": "DU1118", "room": "1140 Panoramasal", "etg": "1" },
+  { "id": "DU1119", "room": "1340 Teknisk rom spa", "etg": "1" },
+  { "id": "DR1120", "room": "1180 Koffertrom", "etg": "1" },
+  { "id": "DU1121", "room": "1130 Fjordblikk", "etg": "1" },
+  { "id": "DU1122", "room": "1130 Fjordblikk (Salto)", "etg": "1" },
+  { "id": "DU1123", "room": "1280 gang, pers inng (Salto)", "etg": "1" },
+  { "id": "DB1129", "room": "1300 Pauserom personal", "etg": "1" },
+  { "id": "D81130", "room": "1290 gang (Oppvask)", "etg": "1" },
+  { "id": "D81131", "room": "1270 gang (Salto)", "etg": "1" },
+  { "id": "DB1132", "room": "1280 gang fra servitør", "etg": "1" },
+  { "id": "DB1133", "room": "1270 gang servitørsone", "etg": "1" },
+  { "id": "DB1143", "room": "1001 Tr. rom, Klakken", "etg": "1" },
+  { "id": "DB1144", "room": "1150 Foaje, Tr.rom", "etg": "1" },
+  { "id": "DB1145", "room": "1003 Sjakt, tavle", "etg": "1" },
+  { "id": "D11147", "room": "1140 Panoramasal fra foaje", "etg": "1" },
+  { "id": "DU1148", "room": "1140 Panoramasal fra foaje", "etg": "1" },
+  { "id": "DU1149", "room": "1140 Panoramasal fra foaje", "etg": "1" },
+  { "id": "DU1150", "room": "1140 Panoramasal fra foaje", "etg": "1" },
+  { "id": "DB1151", "room": "1020 Foreldre/Barn (Salto)", "etg": "1" },
+  { "id": "DB1154", "room": "1060 Toalett Herre", "etg": "1" },
+  { "id": "DB1161", "room": "1070 Toalett HC", "etg": "1" },
+  { "id": "DB1163", "room": "1080 Toalett Dame", "etg": "1" },
+  { "id": "DU1174", "room": "1090 Gang fra foaje", "etg": "1" },
+  { "id": "DU1175", "room": "1090 Gang fra lager", "etg": "1" },
+  { "id": "DB2001", "room": "233 Gang (fra måltrapp)", "etg": "2" },
+  { "id": "DB2003", "room": "232 Lyd og bilde", "etg": "2" },
+  { "id": "DB2004", "room": "233 Gang (Backstage)", "etg": "2" },
+  { "id": "DB2007", "room": "228 Stormsal (terrasse)", "etg": "2" },
+  { "id": "D82008", "room": "246 Trapperom (terrasse)", "etg": "2" },
+  { "id": "D82009", "room": "225 Gang (fra trapperom)", "etg": "2" },
+  { "id": "D12012", "room": "228 Stormsal (toaletter)", "etg": "2" },
+  { "id": "D12013", "room": "228 Stormsal (toaletter)", "etg": "2" },
+  { "id": "D82015", "room": "223 Hotellkorridor", "etg": "2" },
+  { "id": "D82034", "room": "222 Hotellkorridor nord", "etg": "2" },
+  { "id": "D82045", "room": "222 Hotellkorridor (dobbel)", "etg": "2" },
+  { "id": "DU2064", "room": "Kontor nord 2. etg", "etg": "2" },
+  { "id": "DU2065", "room": "Kontor nord 2. etg", "etg": "2" },
+  { "id": "DB2081", "room": "2001 Tr rom/gang heis", "etg": "2" },
+  { "id": "DB2082", "room": "2100 Velvære/gang heis", "etg": "2" },
+  { "id": "DB2083", "room": "2050 Brann dør heis", "etg": "2" },
+  { "id": "DB2084", "room": "2050 Gang heis/Stormsal", "etg": "2" },
+  { "id": "DB2088", "room": "2150 Slusedør gang (Tr.rom)", "etg": "2" },
+  { "id": "DB2089", "room": "2210 Slusedør kontor", "etg": "2" },
+  { "id": "DB2095", "room": "2121 Slusedør gang (Tr.rom)", "etg": "2" },
+  { "id": "DR2096", "room": "2130 Slusedør Media", "etg": "2" },
+  { "id": "DR2101", "room": "2130 mot kjøreport", "etg": "2" },
+  { "id": "D83001", "room": "322 Hotellkorridor", "etg": "3" },
+  { "id": "DB3022", "room": "323 Hotellkorridor nord", "etg": "3" },
+  { "id": "D83033", "room": "323 Hotellkorridor (dobbel)", "etg": "3" },
+  { "id": "D83045", "room": "325 Gang ved heis", "etg": "3" },
+  { "id": "DU3049", "room": "Kontor nord 3. etg", "etg": "3" },
+  { "id": "D84001", "room": "401 Ventilasjonsloft", "etg": "4" },
+  { "id": "DB4001", "room": "4080 studio/sjakt", "etg": "4" },
+  { "id": "DB4005", "room": "4003 Tr. rom/opphold", "etg": "4" },
+  { "id": "DB4007", "room": "2011 sluse/opphold", "etg": "4" },
+  { "id": "D84008", "room": "4030 Tr.rom/sluse", "etg": "4" },
+  { "id": "D14013", "room": "4010 Trommerom", "etg": "4" },
+  { "id": "D14014", "room": "4050 Fellesrom/sluse", "etg": "4" },
+  { "id": "D14015", "room": "4002 sluse/fellesrom", "etg": "4" },
+  { "id": "D14016", "room": "4001 Tr rom/sluse", "etg": "4" },
+  { "id": "D80046", "room": "0291 korridor sør", "etg": "0" },
+  { "id": "D80047", "room": "0250 Kjøkkenlager sør", "etg": "0" },
+  { "id": "D80048", "room": "0250 Kjøkkenlager nord", "etg": "0" },
+  { "id": "DR0049", "room": "0291 korridor nord til øst", "etg": "0" },
+  { "id": "DB2102", "room": "Mot rømningstrapp", "etg": "2" },
+  { "id": "DB2103", "room": "2120 mot rømningstrapp", "etg": "2" },
+  { "id": "DR2050", "room": "Fra tr.rom mot SPA", "etg": "2" },
+  { "id": "DR2090", "room": "Fra 2120 mot SPA", "etg": "2" }
 ]
