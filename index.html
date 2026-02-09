@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kjøreplan Eunike og Georg</title>
+    <title>Dørkontroll System</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="mode-auto">
@@ -11,7 +11,7 @@
     <div id="login-overlay">
         <div class="login-box">
             <h1>SYSTEM ACCESS</h1>
-            <p>Kjøreplan Bryllup Eunike og Georg</p>
+            <p>Sjekkliste Dører & Sikkerhet</p>
             <input type="text" id="username" placeholder="USER" autocomplete="off">
             <input type="password" id="password" placeholder="PASSWORD">
             <button onclick="attemptLogin()">LOGIN</button>
@@ -20,40 +20,33 @@
     </div>
 
     <div id="app-container">
-        
         <header id="header">
-            <div id="clock-container">
-                <div id="clock">00:00:00</div>
+            <div id="brand">
+                <span class="status-dot"></span>
+                <select id="checklist-selector" onchange="switchList(this.value)">
+                    <option value="default">Laster lister...</option>
+                </select>
             </div>
             <div id="controls">
-                <button onclick="cycleViewMode()" id="view-btn">VIEW: AUTO</button>
+                <button onclick="createNewList()" id="new-btn">+ NY</button>
+                <button onclick="exportToJSON()" id="exp-btn">EKSPORT</button>
                 <button onclick="toggleFullScreen()" id="fs-btn">FULL</button>
             </div>
         </header>
 
         <div id="list-header" class="row-main">
-            <div class="col" style="justify-content:center; color:#555;">#</div>
-            <div class="col time" style="font-size:12px; color:#888;">TID</div>
-            
-            <div class="col col-who col-desktop" style="font-size:12px; color:#666;">ANSV</div>
-            
-            <div class="col desc-container" style="font-size:12px; color:#888; font-weight:bold;">HVA / BESKRIVELSE</div>
-            
-            <div class="col col-av col-desktop" style="font-size:12px; color:#8fd;">LYD / BILDE</div>
-            <div class="col col-note col-desktop" style="font-size:12px; color:#fd8;">KOMMENTARER</div>
-            
-            <div class="col dur" style="font-size:12px; color:#666;">VARER</div>
-            
-            <div class="col col-expand"></div> 
+            <div class="col id-col">ID</div>
+            <div class="col room-col">ROM / BESKRIVELSE</div>
+            <div class="col status-col">STATUS</div>
+            <div class="col action-col">SJEKK</div>
         </div>
 
-        <main id="schedule-container">
+        <main id="checklist-container">
             </main>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
     <script src="script.js"></script>
 </body>
 </html>
